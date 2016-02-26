@@ -137,12 +137,6 @@
 		| LPAREN Expression RPAREN;
 
 
-
-/*%terminals MODULE, INT, VOID, IF, ELSE, WHILE, RETURN, BREAK, BOOLEAN, PUBLIC, TRUE, FALSE,
-           INT_LITERAL, STRING_LITERAL, ID, TYPE, IMPORT,
-           PLUS, MINUS, TIMES, DIV, MOD, EQEQ, NEQ, LEQ, GEQ, LT, GT,
-           LBRACKET, RPAREN, COMMA, RCURLY, LCURLY, SEMICOLON, RBRACKET, LPAREN, EQL;*/
-
 /**/
 
 /* Dummy rule to make the lexer compile. Remove this once you have written all other rules. */	  

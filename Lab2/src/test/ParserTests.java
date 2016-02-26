@@ -35,6 +35,20 @@ public class ParserTests {
 
 	@Test
 	public void testEmptyModule() {
-		runtest("module Test { }");
+		runtest("module Test { import a; import b; boolean d;type Class  = \"abc\";public boolean[] f (void c, int d){Class[] e;if(abc())while(r=t) break;else return b=3;}}");
 	}
+	
+	/*
+	 * module Test {
+	 * import a; import b;
+	 * boolean d;
+	 * type Class  = \"abc\";
+	 * public boolean[] f (void c, int d){
+	 * Class[] e;
+	 * if(5)
+	 * while(r=t) break;
+	 * else return;
+	 *
+	 * }
+	 */
 }
