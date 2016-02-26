@@ -1,0 +1,150 @@
+// package the generated Java class lives in; no need to change this
+%package "parser";
+
+// name of the generated Java class; no need to change this
+%class "Parser";
+
+// no need to change this either
+%embed {:
+	// turn off automated error recovery
+	@Override
+	protected void recoverFromError(Symbol token, TokenStream in) throws java.io.IOException, Exception {
+		super.recoverFromError(new Symbol(0), in);
+	}
+:};
+
+// the list of all terminals; no need to change this
+%terminals MODULE, INT, VOID, IF, ELSE, WHILE, RETURN, BREAK, BOOLEAN, PUBLIC, TRUE, FALSE,
+           INT_LITERAL, STRING_LITERAL, ID, TYPE, IMPORT,
+           PLUS, MINUS, TIMES, DIV, MOD, EQEQ, NEQ, LEQ, GEQ, LT, GT,
+           LBRACKET, RPAREN, COMMA, RCURLY, LCURLY, SEMICOLON, RBRACKET, LPAREN, EQL;
+           
+// declaration of start symbol; no need to change this
+%goal Module;
+
+// temporary declaration, you can remove this once you have written all other rules
+/*%goal Dummy;*/
+
+/* TODO: Flesh out the rule for Module, and add rules for other nonterminals. Here is an example
+         of a rule you may want to add:  */
+         
+   
+
+	Module = MODULE ID LCURLY Imports Declarations RCURLY;
+	
+	Import = IMPORT ID SEMICOLON;
+	Imports = Import Imports
+		|
+		;
+	
+	Declaration = FunctionDeclaration 
+		| FieldDeclaration 
+		| TypeDeclaration;
+	Declarations = Declaration Declarations
+		|
+		;
+		
+	FunctionDeclaration = Accessibility TypeName ID LPAREN Parameters RPAREN LCURLY Statements RCURLY
+		| Accessibility TypeName ID LPAREN RPAREN LCURLY Statements RCURLY;
+	
+	FieldDeclaration = Accessibility TypeName ID SEMICOLON;
+	
+	TypeDeclaration = Accessibility TYPE ID EQL STRING_LITERAL SEMICOLON;
+	
+	Accessibility = PUBLIC
+		  |
+		  ;
+	
+	PrimitiveType = INT 
+		| VOID 
+		| BOOLEAN;
+	ArrayType = PrimitiveType LBRACKET RBRACKET
+		| ArrayType LBRACKET RBRACKET
+		| ID LBRACKET RBRACKET;
+
+	
+	TypeName = PrimitiveType
+		| ArrayType
+		| ID;
+	
+	Parameter = TypeName ID;
+	Parameters = Parameter
+		|Parameters COMMA Parameter
+		;
+	
+	Statements = Statement Statements
+		| 
+		;
+	Statement = TypeName ID SEMICOLON
+		| LCURLY Statements RCURLY
+		| IF LPAREN Expression RPAREN Statement ELSE Statement
+		| IF LPAREN Expression RPAREN Statement ELSE Statement ELSE Statement
+		| WHILE LPAREN Expression RPAREN Statement
+		| BREAK SEMICOLON
+		| RETURN Expression? SEMICOLON
+		| Expression SEMICOLON;
+
+	
+	LHSExpression = ID
+		| ArrayAccess;
+		
+	ArrayAccess = ID LBRACKET Expression RBRACKET
+		| ArrayAccess LBRACKET Expression RBRACKET;
+		
+	RHSExpression = ArithmeticExpression 
+		| ArithmeticExpression ComparisonOp ArithmeticExpression;
+	
+	Assignment = LHSExpression EQL Expression;
+	
+	ComparisonOp = EQEQ 
+		| NEQ 
+		| LEQ 
+		| GEQ 
+		| LT 
+		| GT;
+		
+	AddictiveOp = PLUS
+		| MINUS;
+		
+	ArithmeticExpression = ArithmeticExpression AddictiveOp Term
+		| Term;
+		
+	MultiplicativeOp = TIMES 
+		| DIV 
+		| MOD;
+		
+	Term = Term MultiplicativeOp Factor
+		| Factor;
+		
+	Factor = MINUS Factor
+		| PrimaryExpression;
+		
+	Expression = Assignment
+		| RHSExpression;
+	
+	Expressions = Expression
+		| Expression COMMA Expressions
+		;
+		
+	PrimaryExpression = LHSExpression
+		| ID LPAREN Expressions RPAREN
+		| ID LPAREN RPAREN
+		| LBRACKET Expressions RBRACKET
+		| STRING_LITERAL
+		| INT_LITERAL
+		| TRUE
+		| FALSE
+		| LPAREN Expression RPAREN;
+
+
+
+/*%terminals MODULE, INT, VOID, IF, ELSE, WHILE, RETURN, BREAK, BOOLEAN, PUBLIC, TRUE, FALSE,
+           INT_LITERAL, STRING_LITERAL, ID, TYPE, IMPORT,
+           PLUS, MINUS, TIMES, DIV, MOD, EQEQ, NEQ, LEQ, GEQ, LT, GT,
+           LBRACKET, RPAREN, COMMA, RCURLY, LCURLY, SEMICOLON, RBRACKET, LPAREN, EQL;*/
+
+/**/
+
+/* Dummy rule to make the lexer compile. Remove this once you have written all other rules. */	  
+/*Dummy = MODULE INT VOID IF ELSE WHILE RETURN BREAK BOOLEAN PUBLIC TRUE FALSE INT_LITERAL STRING_LITERAL ID TYPE IMPORT
+           PLUS MINUS TIMES DIV MOD EQEQ NEQ LEQ GEQ LT GT LBRACKET RPAREN COMMA RCURLY LCURLY SEMICOLON RBRACKET LPAREN EQL;*/
